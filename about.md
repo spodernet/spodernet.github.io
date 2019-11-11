@@ -7,8 +7,8 @@ key: page-about
 My name is Alessio Chiapperini, on the Internet you can find me under the alias *spidernet* or some clever variation of 
 it (I like using *spookernet* in October).
 I am a graduate student in CS at [Università degli studi di Udine](https://www.uniud.it/en) and I am currently in the
-process of writing my thesis on *bigraphical reactive systems*. My interesets ranges from low-level programming and
-embedded to formal verification, (mathematical) logic, distributed systems, compilers and information theory.
+process of writing my thesis on *bigraphical reactive systems*. My interests ranges from low-level programming and
+embedded systems to formal verification, (mathematical) logic, distributed systems, compilers and information theory.
 
 This blog is mainly about what I do outside my studies. Here I mainly write about topics that I find interesting,
 things I've recently learned or cool ideas.
@@ -43,14 +43,14 @@ addicted to tweaking it.
 
 My favourite programming language is C, it's very fast, it has a very simple syntax and it's not a big language, hence
 you can actually master it, albeit with some effort and not without turning up your nose in a couple of places (ok more
-than a couple). However, if you get around its quirks, it's really a good language and it will teach you a lot. I fell
+than a couple). However, if you get around its quirks, it's a really good language and it will teach you a lot. I fell
 in love with its  simplicity and power, it's so poweful that  it can even format your harddrive if you're not careful. 
 Gotta love [undefined behavior](https://raphlinus.github.io/programming/rust/2018/08/17/undefined-behavior.html). C is 
 usually my `goto` language unless a particular language is better suited for that domain. 
 
 Another language that I like is Haskell. Functional programming has a place in my heart (the first programming course in 
 university was about [Racket](https://racket-lang.org/), a language based on the Scheme dialect of Lisp). Learning and 
-using functional languages really opened my mind and in the meantime probably messed it up too :D. If with C was love 
+using functional languages really opened my mind and in the meantime probably messed it up too :D. If with C it was love
 at first sight, with Haskell it's more of a love-hate relationship.
 
 ## Contact
