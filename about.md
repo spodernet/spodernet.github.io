@@ -41,11 +41,12 @@ For content consumption I use [mpv](https://mpv.io/) with [youtube-dl](https://y
 My dotfiles can be found [here](https://gitlab.com/spidernet/dotfiles), they're mostly stable except my vimrc, I'm
 addicted to tweaking it.
 
-My favourite programming language is C, it's very fast, it has a very simple syntax and it's reasonably easy to master.
-I fell in love with its simplicity and power, it's so poweful that it can even format your harddrive if you're
-not careful. Gotta love 
-[undefined behavior](https://raphlinus.github.io/programming/rust/2018/08/17/undefined-behavior.html). C is usually my `goto`
-language unless a particular language is better suited for that domain. 
+My favourite programming language is C, it's very fast, it has a very simple syntax and it's not a big language, hence
+you can actually master it, albeit with some effort and not without turning up your nose in a couple of places (ok more
+than a couple). However, if you get around its quirks, it's really a good language and it will teach you a lot. I fell
+in love with its  simplicity and power, it's so poweful that  it can even format your harddrive if you're not careful. 
+Gotta love [undefined behavior](https://raphlinus.github.io/programming/rust/2018/08/17/undefined-behavior.html). C is 
+usually my `goto` language unless a particular language is better suited for that domain. 
 
 Another language that I like is Haskell. Functional programming has a place in my heart (the first programming course in 
 university was about [Racket](https://racket-lang.org/), a language based on the Scheme dialect of Lisp). Learning and 
