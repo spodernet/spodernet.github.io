@@ -38,6 +38,9 @@
   @include align-items(center);
   @include flex-wrap(nowrap);
   @include flex(1);
+  a {
+    font-weight: map-get($base, font-weight-bold);
+  }
   height: map-get($layout, header-height);
   margin-right: map-get($spacers, 3);
   white-space: nowrap;
