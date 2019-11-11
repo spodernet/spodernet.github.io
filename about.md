@@ -1,74 +1,57 @@
 ---
 layout: article
-titles:
-  # @start locale config
-  en      : &EN       About
-  en-GB   : *EN
-  en-US   : *EN
-  en-CA   : *EN
-  en-AU   : *EN
-  zh-Hans : &ZH_HANS  关于
-  zh      : *ZH_HANS
-  zh-CN   : *ZH_HANS
-  zh-SG   : *ZH_HANS
-  zh-Hant : &ZH_HANT  關於
-  zh-TW   : *ZH_HANT
-  zh-HK   : *ZH_HANT
-  ko      : &KO       소개
-  ko-KR   : *KO
-  fr      : &KO       À propos
-  fr-BE   : *FR
-  fr-CA   : *FR
-  fr-CH   : *FR
-  fr-FR   : *FR
-  fr-LU   : *FR
-  # @end locale config
+title: About
 key: page-about
 ---
 
-![TeXt Theme](https://raw.githubusercontent.com/kitian616/jekyll-TeXt-theme/master/screenshots/TeXt-home.jpg)
+My name is Alessio Chiapperini, on the Internet you can find me under the alias *spidernet* or some clever variation of 
+it (I like using *spookernet* in October).
+I am a graduate student in CS at [Università degli studi di Udine](https://www.uniud.it/en) and I am currently in the
+process of writing my thesis on *bigraphical reactive systems*. My interesets ranges from low-level programming and
+embedded to formal verification, (mathematical) logic, distributed systems, compilers and information theory.
 
-TeXt is a super customizable Jekyll theme for personal site, team site, blog, project, documentation, etc. Similar to iOS 11 style, it has large and prominent titles, round buttons and cards.
+This blog is mainly about what I do outside my studies. Here I mainly write about topics that I find interesting,
+things I've recently learned or cool ideas.
 
-```javascript
-(() => console.log('Hello, World!'))();
-```
+The source code of this blog is open source and can be found on [Github](https://github.com/spodernet/spodernet.github.io).
+If you have any suggestions or if you find any bugs you can report them at 
+[https://github.com/spodernet/spodernet.github.io/issues](https://github.com/spodernet/spodernet.github.io/issues).
+Also keep in mind that english is not my native language.
 
-## Features
+## License
+The content of this site and the source code used in it are public domain and follow the
+[Unlicense](https://unlicense.org/).
 
-- Responsive
-- Semantic HTML
-- Skins
-- Highlight Theme
-- Internationalization
-- Search
-- Table of contents
-- Authors
-- Additional styles (alert, tag, image, icon, button, grid, etc)
-- Extensions (audios, videos, slides, demos)
-- Markdown enhancements ([MathJax](https://www.mathjax.org/), [mermaid](https://mermaidjs.github.io/), [chartjs](http://www.chartjs.org/))
-- Sharing ([AddToAny](https://www.addtoany.com/), [AddThis](https://www.addthis.com/))
-- Comments ([Disqus](https://disqus.com/), [Gitalk](https://gitalk.github.io/), [Valine](https://valine.js.org/en/))
-- Pageview ([LeanCloud](https://leancloud.cn/))
-- Analytics ([Google Analytics](https://analytics.google.com/analytics/web/))
-- RSS ([jekyll-feed](https://github.com/jekyll/jekyll-feed))
+## Software preferences
+As far as operating systems goes, I have been a GNU/Linux user since 2009. I mainly use ArchLinux, but from time to
+time I like to use various BSDs or other linux distros. I like small and very simple tools without frills and
+distractions.
 
-## Skins
+Most of my work is done in Vim and tmux. I have been using [spectrwm](https://github.com/conformal/spectrwm) as a window
+manager for about a year, before that I was using [xmonad](https://github.com/xmonad/xmonad). I really like the
+flexibility of a tiling window manager.
 
-TeXt has 6 built-in skins, you can also set up your own skin.
+I use [pass](https://www.passwordstore.org/) for managing my passwords. It's simple, it follows the [Unix
+philosophy](http://en.wikipedia.org/wiki/Unix_philosophy) and it even lets me track changes using git so I can access
+them from any device; yes even my phone.
 
-| `default` | `dark` | `forest` |
-| --- |  --- | --- |
-| ![Default](https://raw.githubusercontent.com/kitian616/jekyll-TeXt-theme/master/screenshots/skins_default.jpg) | ![Dark](https://raw.githubusercontent.com/kitian616/jekyll-TeXt-theme/master/screenshots/skins_dark.jpg) | ![Forest](https://raw.githubusercontent.com/kitian616/jekyll-TeXt-theme/master/screenshots/skins_forest.jpg) |
+For content consumption I use [mpv](https://mpv.io/) with [youtube-dl](https://ytdl-org.github.io/youtube-dl/) and 
+[smplayer](https://www.smplayer.info/); my music player of choice is [cmus](https://cmus.github.io/).
 
-| `ocean` | `chocolate` | `orange` |
-| --- |  --- | --- |
-| ![Ocean](https://raw.githubusercontent.com/kitian616/jekyll-TeXt-theme/master/screenshots/skins_ocean.jpg) | ![Chocolate](https://raw.githubusercontent.com/kitian616/jekyll-TeXt-theme/master/screenshots/skins_chocolate.jpg) | ![Orange](https://raw.githubusercontent.com/kitian616/jekyll-TeXt-theme/master/screenshots/skins_orange.jpg) |
+My dotfiles can be found [here](https://gitlab.com/spidernet/dotfiles), they're mostly stable except my vimrc, I'm
+addicted to tweaking it.
 
-### Highlight Theme
+My favourite programming language is C, it's very fast, it has a very simple syntax and it's reasonably easy to master.
+I fell in love with its simplicity and power, it's so poweful that it can even format your harddrive if you're
+not careful. Gotta love 
+[undefined behavior](https://raphlinus.github.io/programming/rust/2018/08/17/undefined-behavior.html). C is usually my `goto`
+language unless a particular language is better suited for that domain. 
 
-TeXt use [Tomorrow](https://github.com/chriskempson/tomorrow-theme) as the highlight theme.
+Another language that I like is Haskell. Functional programming has a place in my heart (the first programming course in 
+university was about [Racket](https://racket-lang.org/), a language based on the Scheme dialect of Lisp). Learning and 
+using functional languages really opened my mind and in the meantime probably messed it up too :D. If with C was love 
+at first sight, with Haskell it's more of a love-hate relationship.
 
-| `tomorrow` | `tomorrow-night` | `tomorrow-night-eighties` | `tomorrow-night-blue` | `tomorrow-night-bright` |
-| --- |  --- | --- | --- |  --- |
-| ![Tomorrow](https://raw.githubusercontent.com/kitian616/jekyll-TeXt-theme/master/screenshots/highlight_tomorrow.png) | ![Tomorrow Night](https://raw.githubusercontent.com/kitian616/jekyll-TeXt-theme/master/screenshots/highlight_tomorrow-night.png) | ![Tomorrow Night Eighties](https://raw.githubusercontent.com/kitian616/jekyll-TeXt-theme/master/screenshots/highlight_tomorrow-night-eighties.png) | ![Tomorrow Night Blue](https://raw.githubusercontent.com/kitian616/jekyll-TeXt-theme/master/screenshots/highlight_tomorrow-night-blue.png) | ![Tomorrow Night Bright](https://raw.githubusercontent.com/kitian616/jekyll-TeXt-theme/master/screenshots/highlight_tomorrow-night-bright.png) |
+## Contact
+My email should be available at the bottom of the page, at least that's where it should be. So much for responsive
+design ;-). Feel free to send me an email.
