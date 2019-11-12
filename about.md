@@ -38,6 +38,9 @@ them from any device; yes even my phone.
 For content consumption I use [mpv](https://mpv.io/) with [youtube-dl](https://ytdl-org.github.io/youtube-dl/) and 
 [smplayer](https://www.smplayer.info/); my music player of choice is [cmus](https://cmus.github.io/).
 
+For emails I use [aerc](https://aerc-mail.org/), an email client written in go that aims to be efficient and
+extensible. Note that it is still a work in progress, so if you do decide to try it, expect some bugs.
+
 My dotfiles can be found [here](https://git.sr.ht/~spidernet/dotfiles), they're mostly stable except my vimrc, I'm
 addicted to tweaking it.
 
