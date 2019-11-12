@@ -38,7 +38,7 @@ them from any device; yes even my phone.
 For content consumption I use [mpv](https://mpv.io/) with [youtube-dl](https://ytdl-org.github.io/youtube-dl/) and 
 [smplayer](https://www.smplayer.info/); my music player of choice is [cmus](https://cmus.github.io/).
 
-My dotfiles can be found [here](https://gitlab.com/spidernet/dotfiles), they're mostly stable except my vimrc, I'm
+My dotfiles can be found [here](https://git.sr.ht/~spidernet/dotfiles), they're mostly stable except my vimrc, I'm
 addicted to tweaking it.
 
 My favourite programming language is C, it's very fast, it has a very simple syntax and it's not a big language, hence
