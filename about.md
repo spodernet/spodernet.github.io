@@ -5,7 +5,7 @@ key: page-about
 ---
 
 My name is Alessio Chiapperini, on the Internet you can find me under the alias *spidernet* or some clever variation of 
-it (I like using *spookernet* in October).
+it (I like to use *spookernet* in October).
 I am a graduate student in CS at [Università degli studi di Udine](https://www.uniud.it/en) focusing on automatic and
 formal verification of software, programming languages and distributed systems; I am currently in the
 process of writing my thesis on *bigraphical reactive systems*. My interests ranges from low-level programming and
