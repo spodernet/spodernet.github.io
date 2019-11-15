@@ -1,4 +1,5 @@
 ---
+layout: article
 title: Sum algebraic data types in C
 tags: c haskell functional
 ---
