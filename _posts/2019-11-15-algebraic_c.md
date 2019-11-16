@@ -21,7 +21,7 @@ data Bool = True | False
   for sets.
   Example:
 ```haskell
-data Pair = P Int Doubl
+data Pair = P Int Double
 ```
 
 - $$X$$ (singleton): represents a singleton type like
