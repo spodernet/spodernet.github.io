@@ -23,6 +23,7 @@ baseurl : # does not include hostname
 title   : "buffer = NULL;"
 description: > # this means to ignore newlines until "Language & timezone"
   "null buffer"
+tab_title: "null buffer"
 
 
 ## => Language and Timezone
