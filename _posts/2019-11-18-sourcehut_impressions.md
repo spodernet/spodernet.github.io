@@ -19,7 +19,7 @@ Microsoft, I moved most of my projects over to Gitlab. However, even though I co
 previous ones, again I felt like it wasn't for me. Gitlab, Bitbucket and to some extent Github all feel like having an
 overly complex interface, and in the end it ended up getting in the way of me being productive.
 
-One day I was being productive, by browsing the internet of course :) when I stumbled upon a beatiful tutorial on [git
+One day I was being productive, by browsing the internet of course :) when I stumbled upon a beautiful tutorial on [git
 rebase](https://git-rebase.io/), and something caught my eyes, it was these 3 sentences: "_This guide brought to you 
 courtesy of sourcehut, the hacker's forge. 100% open source Git & Mercurial hosting, continuous integration, mailing 
 lists, and no JavaScript! Try it today!_". I thought, "_mmh, an open source git hosting service with no JS? I've gotta
