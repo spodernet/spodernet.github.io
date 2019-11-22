@@ -42,7 +42,7 @@ author:
   bio       : I am an amazing person.
   email     : "alessio.chiapperini@nullbuffer.com"
   github    : "spodernet"
-  gitlab    : # "user_name" the last part of your profile url, e.g. https://www.npmjs.com/~user_name
+  feed      : "feed.xml"
 
 
 ## => GitHub Repository (if the site is hosted by GitHub)

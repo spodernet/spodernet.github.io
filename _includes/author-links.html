@@ -116,5 +116,12 @@
       </li>
     {%- endif -%}
 
+    {%- if _author.feed -%}
+      <li title="{{ _locale_string_follow | replace: '[NAME]', 'feed' }}">
+        <a class="button button--circle feed-button" itemprop="sameAs" href="https://www.nullbuffer.com/{{ _author.feed }}" target="_blank">
+          <div class="icon">{%- include svg/icon/social/feed-icon.svg -%}</div>
+        </a>
+      </li>
+    {%- endif -%}
   </ul>
 </div>

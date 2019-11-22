@@ -8,8 +8,8 @@
       .github-button {
         @include clickable($text-color-1, $github-color);
       }
-      .gitlab-button {
-        @include clickable($text-color-1, $gitlab-color);
+      .feed-button {
+        @include clickable($text-color-1, $feed-color);
       }
     }
   }
