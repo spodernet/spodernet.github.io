@@ -6,12 +6,22 @@ key: page-about
 
 My name is Alessio Chiapperini, on the Internet you can find me under the alias *spidernet* or some clever variation of 
 it (I like to use *spookernet* in October).
-I am a graduate student in CS at [Università degli studi di Udine](https://www.uniud.it/en) focusing on automatic and
-formal verification of software, programming languages and distributed systems; I am currently in the
-process of writing my thesis on *bigraphical reactive systems*. My interests ranges from low-level programming and
-embedded systems to formal verification, (mathematical) logic, distributed systems, compilers and information theory.
+I have a master degree in Computer Science from [Università degli studi di Udine](https://www.uniud.it/en) which
+focused on automatic and formal verification of software, programming languages and distributed systems; my master
+thesis was on *bigraphical reactive systems* and its purpose was to define *the embedding problem* for directed
+bigraphs, then I translated the problem into a *constraint satisfaction problem*, whose solutions agree with the
+solutions of the embedding problem. I then gave an implementation of the proposed algorithm as well as an
+implementation of *directed bigraphical reactive systems* and finally conducted some experimental tests to evaluate the
+performance of the implementation in different scenarios. An article regarding the work done on my thesis is available
+at [https://doi.org/10.1007/978-3-030-51372-6_3](https://doi.org/10.1007/978-3-030-51372-6_3).
+In my day job I am testing engineer for a wireless semiconductors and modules vendor, which involves testing various
+aspects of cellular networks, MNO (Mobile Network Operator) and testing communications protocols (FTP, MQTT, etc.) both
+in a real and simulated scenarios. I also help maintaining the automated test suite written in Perl.
 
-This blog is mainly about what I do outside my studies. Here I mainly write about topics that I find interesting,
+My interests ranges from low-level programming and embedded systems to formal verification, (mathematical) logic,
+distributed systems, compilers and information theory.
+
+This blog is mainly about what I do outside my studies or job. Here I mainly write about topics that I find interesting,
 things I've recently learned or cool ideas.
 
 The source code of this blog is open source and can be found on [Github](https://github.com/spodernet/spodernet.github.io).
