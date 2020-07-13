@@ -13,7 +13,7 @@ bigraphs, then I translated the problem into a *constraint satisfaction problem*
 solutions of the embedding problem. I then gave an implementation of the proposed algorithm as well as an
 implementation of *directed bigraphical reactive systems* and finally conducted some experimental tests to evaluate the
 performance of the implementation in different scenarios. An article regarding the work done on my thesis is available
-at [here](https://doi.org/10.1007/978-3-030-51372-6_3).
+[here](https://doi.org/10.1007/978-3-030-51372-6_3).
 In my day job I am testing engineer for a wireless semiconductors and modules vendor, which involves testing various
 aspects of cellular networks, MNO (Mobile Network Operator) and testing communications protocols (FTP, MQTT, etc.) both
 in a real and simulated scenarios. I also help maintaining the automated test suite written in Perl.
