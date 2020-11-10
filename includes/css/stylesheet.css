@@ -33,7 +33,7 @@ body {color:#000000;font-family:monospace,"Courier New",Courier;padding:1em;marg
 .index-intro {font-size:smaller; color:#828282;}
 .index-outdated {padding:0 3px;border:1px solid transparent;color:#721c24;background-color:#f8d7da;border-color:#f5c6cb;}
 .date {font-size:x-small; color:#828282;}
-/* .arrow {color:#483d8b;} */
+/* .arrow {color:#9E358F;} */
 .content-comment {margin:30px 0;}
 .post-data {font-size:x-small;padding:10px 0;color:#333333;}
 .abstract {padding:14px;white-space:pre-wrap;word-wrap:break-word;border:2px solid #c9ba9b;border-radius:6px;font-size:initial;}
@@ -45,7 +45,7 @@ pre {white-space:pre-wrap;word-wrap:break-word;background-color:#eeeeee;border:2
 pre code {color:#222222;font-weight:normal;}
 pre.no-style {line-height:normal;background-color:#ffffff;border:0px;}
 .command {font-weight:bold;}
-a {color:#483d8b;text-decoration:none;}
+a {color:#9E358F;text-decoration:none;}
 q {font-style:italic;}
 img {max-width:100%;border:0;-ms-interpolation-mode:bicubic;vertical-align:middle;}
 iframe {border:1px solid #aaaaaa;}
