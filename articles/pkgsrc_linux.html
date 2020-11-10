@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>NetBSD's pkgsrc as a development environment</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://unixsheikh.com/feed.rss">
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" type="text/css" href="/includes/css/stylesheet.css">
+</head>
+<body>
+<header>
+<center>
+<div style="display: inline-block; vertical-align:middle;">
+<a href="/" style="text-decoration: none;"><b>buffer = NULL;</b><br>
+</a><hr/>
+<nav>[ <a class="nav-btn" href="/index.html">Home</a> ] [ <a class="nav-btn" href="/about.html">About</a> ] [ <a class="nav-btn" href="https://git.sr.ht/~spidernet/">Projects</a> ] [ <a class="nav-btn rss" href="/feed.rss">RSS</a> ]</nav>
+</div>
+</center>
+</header>
+<article>
+<h1>NetBSD's pkgsrc as a development environment</h1>
+<p class="post-data">Published on <span id="pubdate">2019-12-03</span>.</p>
+
+<h3>Table of contents</h3>
+<ul>
+<li><a href="#setup">Setup pkgsrc</a></li>
+<li><a href="#manage_pkgs">Manage packages</a></li>
+<ul>
+<li><a href="#install_pkgs">Install packages</a></li>
+<li><a href="#rm_pkgs">Remove packages</a></li>
+<li><a href="#upd_pkgs">Update packages</a></li>
+</ul>
+<li><a href="#pros_cons">Pros and Cons</a></li>
+<li><a href="#conclusion">Conclusions</a></li>
+</ul>
+<p>As you probabily know I’m in the process of writing my master thesis in CS on <em>bigraphical reactive systems</em>. To do this I’ll contribute to, and extend
+an existing library written in Java, so I needed to setup a development environment.</p>
+<p>My goal was to have an isolated environment with its own set of packages and libraries that I could easily manage (add new packages, remove them and update
+them) without polluting my "local" environment. There are various ways to achieve this, for example:</p>
+<ul>
+<li>by using a <b>virtual machine</b> with the proper packages installed. This solution provides an isolated environment, but it does so at the expense of system
+resources, be it RAM, disk space or CPU. Granted that for my needs it wouldn’t have been a big problem since I could have used a minimal Ubuntu or Debian image,
+but that’s still an OS worth of disk space on top of the tools and libraries I needed;</li>
+<li>using a containerized environment (<b>Docker</b>, <b>Kubernetes</b>, …) provides all benefits of using a virtual machine and more, all while taking up less
+space and being more modular. I already use containers, for example I have one container for building LaTeX sources. All in all this is a solid choice;</li>
+<li><b>nix</b> and <b>nix-shell</b>: the nix package manager (and NixOS as a whole) provides a way to define virtual environments using the <code>nix-shell</code>
+command. You can build different environments for different projects and with different version of packages all of them isolated from each other. You can read
+more about it <a href="https://nixos.wiki/wiki/Development_environment_with_nix-shell">here</a>.</li>
+</ul>
+<p>Out of these three ways I’d have chosen to use the nix package manager and nix-shell as it is the most flexible of the them. But that’s not what I’m going to
+talk about, instead I decided to use <a href="https://www.pkgsrc.org/">pkgsrc</a>, NetBSD’s package manager. It offers more than 22.000 packages available for
+23 different platforms.</p>
+
+<h2 id="setup">Setup pkgsrc</h2>
+<p>Before using pksrc the <a href="https://wiki.netbsd.org/pkgsrc/how_to_use_pkgsrc_on_linux/">wiki</a> reccomends having the following packages installed:
+gcc (and libstdc++), libncurses-devel, zlib and zlib-devel. You can install pkgsrc using your distribution package manager, for example for Arch Linux you can
+find it in the <a href="https://aur.archlinux.org/packages/netbsd-pkgsrc/">AUR</a>, which at the moment of writing this article is based on the version of
+packages of Q3 2019. Otherwise you can install it by downloading it from git, for example:</p>
+<pre><code>git clone --depth 1 -b pkgsrc-2019Q3 https://github.com/netbsd/pkgsrc ~/pkgsrc</code></pre>
+<p>or
+<pre><code>git clone --depth 1 https://github.com/netbsd/pkgsrc ~/pkgsrc</code></pre>
+for the latest version.</p>
+<p>Once you’ve installed and downloaded pksrc you have to <em>bootstrap</em> it. It can be bootstrapped in two modes: privileged and unprivileged. In unprivileged
+mode packages are installed for one single user. By default it’d be bootstrapped in privileged moded. Boostraping it is as simple as:</p>
+<pre><code class="command">$ cd /path/to/pkgsrc/bootstrap
+# ./bootstrap</code></pre>
+<p>To bootrstrap it in unprivileged mode you can pass it the <code>--unprivileged</code> option. By default, in privileged mode pksrc will use <code>/usr/pkg</code>
+for prefix where programs will be installed, while in unprivileged mode <code>~/pkg</code> will be used. To manually change the prefix you can use the
+<code>--prefix</code> option. It is thus possibile to bootstrap multiple instances of pkgsrc in different directories and have different development
+environments.</p>
+<p>After having bootstrapped pkgsrc we can set the <code>PATH</code> and <code>MANPATH</code> accordingly:</p>
+<pre><code class="command">$ PATH=/usr/pkg/sbin:/usr/pkg/bin:$PATH
+$ MANPATH=/usr/pkg/man:$MANPATH</code></pre>
+<p>If we have multiple instances of pkgsrc we have to be extra careful about setting the <code>PATH</code> variable. For example if we have two instances of pkgsrc,
+one for Java development and one for C development in folders <code>~/javaenv</code> and <code>~/cenv</code>, by using some bash magic we can define two functions
+to set the <code>PATH</code> variable whenever we want to use the binaries in the Java environment or in the C environment, or even change the path depending on
+the current working directory (see <a href="https://superuser.com/questions/914087/can-i-change-my-path-dynamically-based-on-my-cwd">here</a>).</p>
+
+<h2 id="manage_pkgs">Manage packages</h2>
+<p>Pkgsrc provides a series of utilities to help you manage your packages:</p>
+<ul>
+<li><code>pkg_info</code> lets you query information about installed packages. For example <code>pkg_info -u</code> lists all user-installed packages and not
+their dependencies, while <code>pkg_info -a</code> shows all installed packages, for more info read <code>man pkg_info</code>;</li>
+<li><code>pkg_admin</code> lets you perform various administration tasks on your packages, like check the MD5 checksum of installed packages, check
+vulnerabilities of installe packages and other tasks.</li>
+</ul>
+<p>The other utilities will be discussed in the following sections.</p>
+
+<h3 id="install_pkgs">Install packages</h3>
+<p>There are two ways to install packages: you can either build it from source or install a precompiled binary.</p>
+
+<h4>Build packages</h4>
+<p>To build a package from sources you first need to locate it under <code>${PREFIX}/pkgsrc</code>, for example to search <code>clang</code> you could do</p>
+<pre><code class="command">$ find /usr/pkgsrc -type d -name "clang"</code>
+<code>/usr/pkgsrc/lang/clang</code></pre>
+<p>Now to build it you would <code>cd</code> into <code>/usr/pkgsrc/lang/clang</code> and then you can compile and install it:</p>
+<pre><code class="command">$ sudo bmake install</code></pre>
+<p>this would also build its dependencies. If you want to clean the object files generates during the build process you could append <code>clean</code> to the
+build command:</p>
+<pre><code class="command">sudo bmake install clean</code></pre>
+<p>If you’re building a package for several systems you can create a package and install it afterwards:</p>
+<pre><code class="command">$ sudo bmake package</code>
+<code>[...]
+=> Creating binary package in /usr/pkgsrc/packages/All/clang-X.Y.Z.tgz
+</code>
+<code class="command">$ sudo pkg_add /usr/pkgsrc/packages/All/clang-X.Y.Z.tgz</code></pre>
+
+<h4>Install binaries</h4>
+<p>In order to install precompiled binaries we need to use <a href="http://pkgin.net/">pkgin</a>, we can install it by building it from source by calling
+<pre><code>sudo bmake install clean</code></pre> from <code>${PREFIX}/usr/pkgsrc/pkgtools/pkgin</code>.</p>
+<p>Before using pkgin we need to setup a repository in the <code>${PREFIX}/etc/pkgin/repositories.conf</code> file, we will use the binary packages
+provided by <a href="https://pkgsrc.joyent.com/">joyent</a>:</p>
+<pre><code class="command">$ echo https://pkgsrc.joyent.com/packages/Linux/el7/trunk/x86_64/All/ > /usr/pkg/etc/pkgin/repositories.conf</code></pre>
+<p>After this you can use 
+<pre><code class="command"># pkgin update</code></pre>
+to build the initial database and to keep it synchronized. Now you’re ready to use pkgin, for example to install tmux run:
+<pre><code class="command"># pkgin install tmux</code></pre></p>
+<p>To learn about the other commands you can refer its manual or to <a href="http://pkgin.net/">this page</a>.</p>
+
+<h3 id="rm_pkgs">Remove packages</h3>
+<p>Removing a package, whether it was installed from source code or from a binary package is as simple as calling</p>
+<pre><code class="command">$ sudo pkg_delete pkg_name</code></pre>
+<p>it can also accept wildcards, for example
+<pre><code class="command"># pkg_delete "*emacs*"</code></pre>
+removes the set of emacs packages.</p>
+
+<h3 id="upd_pkgs">Update packages</h3>
+<p>There are <a href="https://wiki.netbsd.org/pkgsrc/how_to_upgrade_packages/">various ways</a> to update packages in pkgsrc. For updating binaries I use:</p>
+<pre><code class="command">$ pkgin update
+$ pkgin full-upgrade</code></pre>
+<p>For packages built from source I use <code>pkg_rolling-replace</code> a shell script available in
+<a href="http://pkgsrc.se/pkgtools/pkg_rolling-replace">pkgtools/pkg_rolling-replace</a>. For more info check its man page or
+<a href="https://wiki.netbsd.org/pkgsrc/how_to_upgrade_packages/">this page</a> in pkgsrc’s wiki.
+<p class="info info-blue" style="font-size:initial;"><b>NOTE:</b><br>
+Before updating packages make sure to download an updated pkgsrc directory.</p>
+
+<h2 id="pros_cons">Pros and Cons</h2>
+<p>We’ve seen how to setup pkgsrc, how to install packages and how it could be used as a development environment and with some effort we can have multiple
+environments. But there are some disadvantages to consider: first of all, not every package is available as a binary (for Linux) so we might have to compile it
+from source, second is that as far as I am aware you cannot directly install a specific version of a package that is not in the repository. Moreover, as we’ve
+seen, setting up multiple development environments is a bit involved and requires to mess with environment variables, so it’s not really user friendly. All these
+disadvantages come from the fact that pkgsrc’s goal is to be a package management system and not to provide a development environment.</p>
+
+<h2 id="conclusion">Conclusions</h2>
+<p>In conclusion it’s indeed possible to use pkgsrc as a development environments but it is a quite exotic setup and it has some shortcomings, therefore it might
+not be for everyone or even suitable especially in production.</p>
+</article>
+</body>
+</html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Sum algebraic data types in C</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://unixsheikh.com/feed.rss">
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" type="text/css" href="/includes/css/stylesheet.css">
+</head>
+<body>
+<header>
+<center>
+<div style="display: inline-block; vertical-align:middle;">
+<a href="/" style="text-decoration: none;"><b>buffer = NULL;</b><br>
+</a><hr/>
+<nav>[ <a class="nav-btn" href="/index.html">Home</a> ] [ <a class="nav-btn" href="/about.html">About</a> ] [ <a class="nav-btn" href="https://git.sr.ht/~spidernet/">Projects</a> ] [ <a class="nav-btn rss" href="/feed.rss">RSS</a> ]</nav>
+</div>
+</center>
+</header>
+<article>
+<h1>Sum algebraic data types in C</h1>
+<p class="post-data">Published on <span id="pubdate">2019-11-15</span>.</p>
+<p class="info info-yellow abstract">Algebraic data types are the fundamental building block of many functional programming languages. They are the primitives
+upon which all of the other richer types are built</p>
+
+<h3>Table of contents</h3>
+<ul>
+<li><a href="#sum_types">Sum types</a></li>
+<ul>
+<li><a href="#peano_nums">Example: Peano numbers</a></li>
+<li><a href="#lazy_list">Example: lazy list</a></li>
+</ul>
+<li><a href="#caveats">Caveats</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#reading_mat">Reading material</a></li>
+<li><a href="#references">References</a></li>
+</ul>
+<p>Algebraic data types (ADTs) are the most basic types in Haskell and in many functional programming languages, they are so used that even some imperative
+(and multi-paradigm) programming languages have them (e.g. C++, Swift, Rust, …). They come from <em>type theory</em> (where they correspond to an <em>initial
+algebra</em>) and from <em>domain theory</em>. They are called "algebraic" becase ADTs are created using algebraic operations, these operations are:
+<ul>
+<li>+ (sum): represents sum types or disjoint unions, for example<pre><code>data Bool = True | False</code></pre></li>
+<li>⋅ (product): represents product types such as tuples or structs. They are analogous to the cartesian product for sets. Example:
+<pre><code>data Pair = P Int Double</code></pre></li>
+<li>𝑋 (singleton): represents a singleton type like
+<pre><code>data X a = X a</code></pre></li>
+<li>1 (unit): the unit type <code>()</code>;</li>
+<li>μ: the least-fixed point operator, used for building recursive types.</li>
+</ul>
+<p>These operators are also used in domain and type theory to express the denotational semantics of programming languages, for more details see
+<a href="#references">[1]</a></p>
+<p>An ADT is therefore defined by two pieces of data:</p>
+<ol>
+<li>name for the type used to represents its values;</li>
+<li>set of constructors (and destructors) used to create new values (and for pattern matching). These constructors may have arguments that hold values of
+the given type.</li>
+</ol>
+<p>For example let’s consider the <a href="https://wiki.haskell.org/Peano_numbers">Peano numbers</a> defined as:</p>
+<pre><code>data Peano = Zero | Succ Peano</code></pre>
+<p>where <code>Peano</code> is the name of the ADT, <code>Zero</code> and <code>Succ</code> are value constructors. The destructor of the sum data type is
+the <code>case</code> construct.
+<p>Since the majority of programming languages have product types already, in the following we will focus on sum types.</p>
+
+<h2 id="sum_types">Sum types</h2>
+<p>As we’ve already seen, sum types denote some kind of alternation or choice (<code>A | B</code>, meaning <code>A</code> or <code>B</code> but not both).
+They are particularly useful when paired with pattern matching because they provide a great level of type safety, they have an efficient implementation, and
+they provide programmers the tools to describe different possibilities.</p>
+<p>One can say that sum types feel a lot like a combination of unions and enumerations, and that’s true, in fact we’ll see how to implement various (sum)
+algebraic data types in C.</p>
+
+<h3 id="peano_nums">Example: Peano numbers</h3>
+<p>As a first example we’ll implement Peano numbers in C and a function to add two (Peano) numbers. As we’ve seen in the example above, Peano numbers are a
+way to represent natural numbers using only the value zero and a successor function, for example 4 is represented as <code>S S S S 0</code> where <code>S</code>
+stands for Successor.</p>
+<p>To represent the (value) constructors we can use an enum</p>
+<pre><code>enum peano_const {ZERO, SUCC};</code></pre>
+<p>this enumeration will be used for building peano numbers and for pattern matching.</p>
+<p>To actually represent the data type we could use the following struct:</p>
+<pre><code>struct peano {
+        enum peano_const type;
+        union {
+                struct peano *data;
+        };
+};</code></pre>
+<p>Where <code>*data</code> will be used to point to the preceding peano number, for example if the number is <code>S S S 0</code>, <code>data</code> will point
+to <code>S S 0</code>.</p>
+<p class="info info-blue" style="font-size:initial;"><b>NOTE:</b><br>Anonymous unions (and structs) are valid only from C11 or when using GNU extensions.</p>
+<p>Since only the Succ constructor holds a value we can move the struct outside the union:</p>
+<pre><code> struct peano {
+        enum peano_const type;
+        struct peano *data;
+};</code></pre>
+<p>To implement the data constructor we will define two functions, one for each of them:</p>
+<pre><code>struct peano *
+make_zero(struct peano *num)
+{
+        if (num) {
+                num->type = ZERO;
+                num->data = 0;
+        }
+
+        return num;
+}</code></pre>
+<p>and</p>
+<pre><code>struct peano *
+succ(struct peano *num)
+{
+        if (num) {
+                struct peano *res = malloc(sizeof(struct peano));
+
+                if (res) {
+                        res->type = SUCC;
+                        res->data = num;
+                        num = res;
+                }
+        }
+
+        return num;
+}</code></pre>
+<p>The first just initializes a peano number as zero and sets the pointer to the data to 0 or <code>NULL</code>, while the second allocates space for a new
+number and inserts it at the beginning, marking it as a <code>SUCC</code> and adjusts the pointers.</p>
+<p>Next we will see how to add two numbers, to do that we will use a recursive function that emulates pattern matching: if the first argument 𝑛 is
+<code>Zero</code> we can return the second argument. However, if the first argument is a <code>Succ</code> of another number, let’s say 𝑎, we will call
+<code>add</code> recursively on 𝑎 and on the second argument, let’s call it 𝑚 and increment by one the result. Effectively we are decreasing the first argument
+by one on each recursive call and increasing the result by one, at the end we will reach the base case (𝑎 is <code>Zero</code>) and we just have to walk back
+the stack of recursive calls and compute the successor at each step. At the end we would have called the successor function 𝑛 time on the number 𝑚, thus adding 𝑛
+to 𝑚.</p>
+<pre><code>struct peano *
+add(struct peano *n, struct peano *m)
+{
+        /* Emulates pattern matching */
+        switch (n->type) {
+        case ZERO:
+                return m;
+        case SUCC:
+                return succ(add(n->data, m));
+        default:
+                fprintf(stderr, "Non-exhaustive patterns in function %s\n", 
+                    __func__);
+                return 0;
+        }
+}</code></pre>
+
+<h3 id="lazy_list">Example: lazy list</h3>
+<p>As our last example we’ll look at something more involved: lazy lists</p>
+<pre><code>data List = Empty | Cons Int List</code></pre>
+<p>This type is a bit more complex because it combines sum types with product types (see the <code>Cons</code> constructor). In type theory this will correspond to
+μβ.1 + Int × β, where μβ means that this is a recursive type called β, and 1 is the unit type used to indicate <code>Empty</code>, while Int × β is the
+<code>Cons</code> constructor.</p>
+<p>In our encoding this will translate to:</p>
+<pre><code>/* Data constructor names */
+enum list_const {EMPTY, CONS};
+
+/* Actual sum data type */
+struct list {
+        enum list_const type;
+        struct data {
+            int num;
+            struct list *next;
+        } data;
+};</code></pre>
+<p>Where the inner struct represents the product type Int × β. The implementation of the two constuctors is similar to the ones in the previous example:</p>
+<pre><code>/* Empty list constructor */
+struct list *
+make_empty(struct list *lst)
+{
+        lst->type = EMPTY;
+        lst->data = (struct data) {0};
+
+        return lst;
+}
+
+/* Cons constructor */
+struct list *
+cons(int a, struct list *lst)
+{
+        if (lst) {
+                struct list *new = malloc(sizeof(struct list));
+
+                if (new) {
+                        new->type = CONS;
+                        new->data.num = a;
+                        new->data.next = lst;
+                        lst = new;
+                }
+        }
+
+        return lst;
+}</code></pre>
+<p>Computing the length of the list is quite easy, we just have to traverse it until we reach the "empty" element and sum 1 at each call. We could have made it
+using a loop, but this showcases our version of pattern matching:</p>
+<pre><code>int
+length(struct list *lst)
+{
+        if (lst) {
+                switch (lst->type) {
+                case EMPTY:
+                        return 0;
+                case CONS:
+                        /* Could use tail recursion */
+                        return 1 + length(lst->data.next);
+                default:
+                        fprintf(stderr, "Non-exhaustive patterns in function "
+                            "%s\n", __func__);
+                }
+        }
+
+        return -1;
+}</code></pre>
+<p>The complete sources of the examples are available <a href="https://git.sr.ht/~spidernet/algebraiC/">here</a>.</p>
+
+<h3 id="caveats">Caveats</h3>
+<p>Consider a slightly more complex sum data type in which more that one constructor carries a value, for example</p>
+<pre><code>data Pair = PI Int | PD Double</code></pre>
+<p>in our implementation it would correspond to:</p>
+<pre><code>/* Data constructor names */
+enum pair_const {PI, PD};
+
+/* Actual sum data type */
+struct pair {
+        enum pair_const type;
+        union data {
+                int i;
+                double d;
+        } data;
+};</code></pre>
+This is not safe, nothing prevents us from accessing <code>.d</code> even if <code>type</code> is <code>PI</code>, because the fields of the union are always
+accessible. This is what distinguishes our implementation from classic sum types in Haskell for example, in which they are safe.
+
+<h2 id="summary">Summary</h2>
+<p>Sum types are one of my favourite features of Haskell and once you’ve used them it’s difficult to come back to a language without them, they are a useful tool
+that provides excellent safety and expressive power. They’re so useful that more and more languages are adopting them and it’s even possibile to implement them in
+C, with some caveats. As a side note, in C++ they could be implemented using a class with virtual members, by using the visitor pattern, using variant types or by
+using a templated class.</p>
+
+<h3 id="reading_mat">Reading material</h3>
+<p>If you’re interested in reading more about algebraic data types and pattern matching you can read their wikipedia pages [<a href="#references">2,3</a>], the
+pages in the haskell wiki [<a href="#references">4,5</a>] and the haskell tutorial [<a href="#references">6</a>].</p>
+
+<h4 id="references">References</h4>
+<p>[1]: The Formal Semantics of Programming Languages: An Introduction, Glynn Winskel, MIT Press, 1993.<br>
+[2]: <a href="https://en.wikipedia.org/wiki/Algebraic_data_type">Wikipedia: algebraic data type</a>.<br>
+[3]: <a href="https://en.wikipedia.org/wiki/Pattern_matching">Wikipedia: pattern matching</a>.<br>
+[4]: <a href="https://wiki.haskell.org/Algebraic_data_type">wiki.haskell: algebraic data type</a>.<br>
+[5]: <a href="https://en.wikibooks.org/wiki/Haskell/Pattern_matching">wikibooks: pattern matching</a>.<br>
+[6]: <a href="https://www.haskell.org/tutorial/patterns.html">haskell tutorial: pattern matching</a>.</p>
+</article>
+</body>
+</html>
