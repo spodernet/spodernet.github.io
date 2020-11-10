@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="0.91">
+<channel>
+    <title>nullbuffer.com</title>
+    <link>https://nullbuffer.com</link>
+    <description>This blog is mainly about what I do outside my studies or job. Here I mainly write about topics that I find interesting, things I’ve recently learned or cool ideas.</description>
+<item>
+<pubDate>2019-12-03</pubDate>
+<title>NetBSD's pkgsrc as a development environment</title>
+<link>https://nullbuffer.com/articles/pkgsrc_linux.html</link>
+</item>
+<item>
+<pubDate>2019-11-18</pubDate>
+<title>First impressions on Sourcehut</title>
+<link>https://nullbuffer.com/articles/sourcehut_impressions.html</link>
+</item>
+<item>
+<pubDate>2019-11-15</pubDate>
+<title>Sum algebraic data types in C</title>
+<link>https://nullbuffer.com/articles/algebraic_c.html</link>
+</item>
+</channel></rss>
