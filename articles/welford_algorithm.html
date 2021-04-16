@@ -78,7 +78,7 @@ int main(void)
 <p>The explaination as to why this algorithm computes the running average is left as an exercise to the reader :).</p>
 <h2 id="welfords_algorithm">Welford's algorithm for the running mean and variance</h2>
 <p>This method of computing the running mean dates back to a 1962 paper by  B. P. Welford [<a href="#references">1</a>] and is presented in Donald Knuth’s Art of
-Computer Programming, Vol 2 which introduces an algorithm for computing the simple variance in one pass:</p>
+Computer Programming, Vol 2 which introduces an algorithm for computing the sample variance in one pass:</p>
 <p>$$
 \begin{align}
 M_1 &= x_1, & M_k &= M_{k-1} \oplus (x_k \ominus M_{k-1}) \oslash k \\
