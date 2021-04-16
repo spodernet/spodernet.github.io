@@ -5,6 +5,11 @@
     <link>https://nullbuffer.com</link>
     <description>This blog is mainly about what I do outside my studies or job. Here I mainly write about topics that I find interesting, things I’ve recently learned or cool ideas.</description>
 <item>
+<pubDate>2021-04-16</pubDate>
+<title>Numerically stable algorithm for computing the running mean</title>
+<link>https://nullbuffer.com/articles/welford_algorithm.html</link>
+</item>
+<item>
 <pubDate>2019-12-03</pubDate>
 <title>NetBSD's pkgsrc as a development environment</title>
 <link>https://nullbuffer.com/articles/pkgsrc_linux.html</link>
