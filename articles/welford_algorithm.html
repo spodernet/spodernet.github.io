@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Numerically stable algorithm for computing the running mean</title>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://nullbuffer.com/feed.rss">
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" type="text/css" href="/includes/css/stylesheet.css">
+</head>
+<body>
+<header>
+<center>
+<div style="display: inline-block; vertical-align:middle;">
+<a href="/" style="text-decoration: none;"><b>buffer = NULL;</b><br>
+</a><hr/>
+<nav>[ <a class="nav-btn" href="/index.html">Home</a> ] [ <a class="nav-btn" href="/about.html">About</a> ] [ <a class="nav-btn" href="https://git.sr.ht/~spidernet/">Projects</a> ] [ <a class="nav-btn rss" href="/feed.rss">RSS</a> ]</nav>
+</div>
+</center>
+</header>
+<article>
+<h1>Numerically stable algorithm for computing the running mean</h1>
+<p class="post-data">Published on <span id="pubdate">2021-04-15</span>.</p>
+<p class="info info-yellow abstract">In computational statistics a major role is played by algorithms for calculating variance and (to a less degree) mean. Since these algorithms deal with floating-point arithmetic, it is important that they are <em>numerically stable</em> while also avoiding <em>overflows</em>. In this article we'll take a look at Welford's algorithm for computing the running variance and mean with a focus on its numerical properties.</p>
+
+<h3>Table of contents</h3>
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#welfords_algorithm">Welford's algorithm for the running mean and variance</a></li>
+<ul>
+<li><a href="#numerical_stability">Numerical stability</a></li>
+<li><a href="#overflow">Overflow</a></li>
+</ul>
+<li><a href="#references">References</a></li>
+</ul>
+<h2 id="introduction">Introduction</h2>
+<p>This blog post was inspired by the following message in ##C on freenode:</p>
+<pre><code>&lt;mikoto-chan&gt; Hello
+&lt;mikoto-chan&gt; I'm reading a book on C and there is a really fishy piece of code that I don't understand
+&lt;mikoto-chan&gt; https://dpaste.com/G2L5DN4AG
+&lt;mikoto-chan&gt; I need to find out how to make "Naive avg" and "Average" differ without making it overflow
+&lt;mikoto-chan&gt; basically, I need to demonstrate that "Average" is indeed better than "Naive avg"</code></pre>
+<p>Which references exercise 15 in chapter 1 of <a href="https://users.soe.ucsc.edu/~pohl/abc4.html">A book on C</a>.</p>
+
+<blockquote>15 (Suggested to us by Donald Knuth at Stanford University.) In the <em>running_sum</em> program in Section 1.6, "Flow of Control," on page 26, we first
+computed a sum and then divided by the number of summands to compute an average. The following program illustrates a better way to compute the average:
+<pre><code>/* Compute a better average. */
+
+#include&lt;stdio.h&gt;
+
+int main(void)
+{
+	int   	     i;        
+  	double  x;        
+  	double  avg    =  0.0; /* a better average */
+  	double  navg;            /* a naive average */
+  	double  sum    =  0.0;
+
+  	printf("%5s%17s%17s%17s\n%5s%17s%17s%17s\n\n",
+   	  	"Count", "Item", "Average", "Naive avg",
+   	  	"-----", "----", "-------", "------");
+
+  	for (i = 1; scanf("%lf", &x) == 1; ++i)
+  	{
+   	  	avg += (x - avg) / i;
+   	  	sum += x;
+   	  	navg = sum / i;
+   	  	printf("%5d%17e%17e%17e\n", i, x, avg, navg);
+  	}
+  	return 0;
+}</code></pre>
+<p>Run this program so that you understand its effects. Note that the better algorithm for computing the average is embodied in the line</p>
+<pre><code>avg += (x - avg) / i;</code></pre>
+<p>Explain why this algorithm does, in fact, compute the running average. Hint: Do some simple hand calculations first.</p>
+</blockquote>
+<p>The explaination as to why this algorithm computes the running average is left as an exercise to the reader :).</p>
+<h2 id="welfords_algorithm">Welford's algorithm for the running mean and variance</h2>
+<p>This method of computing the running mean dates back to a 1962 paper by  B. P. Welford [<a href="#references">1</a>] and is presented in Donald Knuth’s Art of
+Computer Programming, Vol 2 which introduces an algorithm for computing the simple variance in one pass:</p>
+<p>$$
+\begin{align}
+M_1 &= x_1, & M_k &= M_{k-1} \oplus (x_k \ominus M_{k-1}) \oslash k \\
+S_1 &= 0, & S_k &= S_{k-1} \oplus (x_k \ominus M_{k-1}) \otimes (x_k \ominus M_k)
+\end{align}$$
+for \(2 \leq k \leq n\), the \(k\)-th estimate of the variance is \(s^2 = S_k/(k–1)\) and the standard deviation is \(\sigma = \sqrt{S_n / (n-1)}\). Where
+\(\oplus\), \(\ominus\), \(\otimes\) and \(\oslash\) are the floating-point approximation of their respective operators.</p>
+<p>The algorithm works by keeping an estimate of the sample mean at the \(k\)-th instance, \(M_k\), which is used to update the auxiliary second order statistics
+\(S_k\). This auxiliary value is used, in turn, to calculate the variance. At the beginning of the data monitoring process, we set \(M_1\) to \(x_1\) and
+\(S_1\) to zero. After each new observation arrives, we update the stored statistics, as seen above.</p>
+<p>To answer mikoto-chan's question (demonstrate that "Avarage" is better than "Naive avg"), we first need to understand in what way the proposed average is better
+than the naive one: their difference lies in their <em>numerical stability</em> and the presence of <em>overflows</em>.</p>
+
+<h3 id="numerical_stability">Numerical stability</h3>
+<p> The proposed way of computing the running average is more <em>numerically stable</em>. In this case numerical stability refers to a potential loss of precision:
+in the second method, the intermediate result (<code>sum</code>) will tend to grow without bound, which means we will eventually lose <em>low-end precision</em>,
+which means that if the average of the numbers we are summing is much larger than the distance of each number from the average, the naive approach will lose
+mantissa bits. In the first method since we are looking at the relative values, the intermediate result should stay of a roughly similar magnitude from the input data
+meaning that it will retain precision better.</p>
+<p>To better explain the problem consider the representation of a floating-point: a sign, mantissa and an exponent. The mantissa represents the <em>precision</em>,
+i.e. the significant digits, and there are a fixed number of them (<code>DBL_MANT_DIG</code>, typically 53).</p>
+<p class="info info-blue" style="font-size:initial;"><b>NOTE:</b><br>This view is a bit simplified, for more details see <a href="https://en.wikipedia.org/wiki/IEEE_754">IEEE 754</a>
+and this paper by Goldberg [<a href="#references">2</a>].</p>
+<p>As the numbers numbers grow larger, the exponent
+(between <code>DBL_MIN_EXP</code>, and <code>DBL_MAX_EXP</code> which are respectively -1021 and 1024) begins to increase, which means that the significant digits begin
+to move away from the binary-point.</p>
+<p>The stability only really matters when we have lots of values that are close to each other as they lead to what is known as <em>catastrophic cancellation</em>
+[<a href="#references">3, 4, 5</a>] in the floating point literature.</p>
+<p class="info info-blue" style="font-size:initial;"><b>NOTE:</b><br>In this discussion we are not considering the potential loss of precision introduced by adding two numbers
+that differ in magnitude by the significant digits available (e.g. 1 + 1e-12), in these cases
+<a href="https://en.wikipedia.org/wiki/Kahan_summation_algorithm">Kahan summation algorithm</a> can be used to compensate for these errors.</p>
+<p>For a more thorough comparison of several one-pass and two-pass algorithms for the computation of sample means and variance in terms of performance and accuracy see this article
+by Ling [<a href="#references">6</a>].</p>
+
+<h3 id="overflow">Overflow</h3>
+<pre><code>sum += x;
+navg = sum / i;</code></pre>
+<p>In the above code suppose we have large numbers, then the value of their sum may exceed <code>DBL_MAX</code> causing overflow which is not the case in the other approach.</p>
+
+<h2 id="references">References</h2>
+<p>[1]: Welford BP. Note on a method for calculating corrected sums of squares and products. Technometrics. 1962 Aug 1;4(3):419-20.<br>
+[2]: <a href="https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html">What Every Computer Scientist Should Know About Floating-Point Arithmetic</a>.<br>
+[3]: <a href="https://en.wikipedia.org/wiki/Loss_of_significance">Wikipedia: Loss of significance</a>.<br>
+[4]: <a href="https://en.wikipedia.org/wiki/Catastrophic_cancellation">Wikipedia: Catastrophic cancellation</a>.<br>
+[5]: <a href="https://introcs.cs.princeton.edu/java/91float/">Computer Science: An Interdisciplinary Approach, Robert Sedgewick, Kevin Wayne, Addison-Wesley Professional; 1st edition (June 15, 2016)</a>.<br>
+[6]: Ling, Robert F. (1974). Comparison of Several Algorithms for Computing Sample Means and Variances. Journal of the American Statistical Association, Vol. 69, No. 348, 859-866.<br>
+</article>
+</body>
+</html>
