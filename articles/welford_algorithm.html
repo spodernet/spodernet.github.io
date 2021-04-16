@@ -102,9 +102,8 @@ meaning that it will retain precision better.</p>
 i.e. the significant digits, and there are a fixed number of them (<code>DBL_MANT_DIG</code>, typically 53).</p>
 <p class="info info-blue" style="font-size:initial;"><b>NOTE:</b><br>This view is a bit simplified, for more details see <a href="https://en.wikipedia.org/wiki/IEEE_754">IEEE 754</a>
 and this paper by Goldberg [<a href="#references">2</a>].</p>
-<p>As the numbers numbers grow larger, the exponent
-(between <code>DBL_MIN_EXP</code>, and <code>DBL_MAX_EXP</code> which are respectively -1021 and 1024) begins to increase, which means that the significant digits begin
-to move away from the binary-point.</p>
+<p>As the numbers grow larger, the exponent (between <code>DBL_MIN_EXP</code>, and <code>DBL_MAX_EXP</code> which are respectively -1021 and 1024) begins to increase,
+which means that the significant digits begin to move away from the binary-point.</p>
 <p>The stability only really matters when we have lots of values that are close to each other as they lead to what is known as <em>catastrophic cancellation</em>
 [<a href="#references">3, 4, 5</a>] in the floating point literature.</p>
 <p class="info info-blue" style="font-size:initial;"><b>NOTE:</b><br>In this discussion we are not considering the potential loss of precision introduced by adding two numbers
