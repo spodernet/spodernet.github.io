@@ -53,24 +53,24 @@ computed a sum and then divided by the number of summands to compute an average.
 
 int main(void)
 {
-	int   	     i;        
-  	double  x;        
-  	double  avg    =  0.0; /* a better average */
-  	double  navg;            /* a naive average */
-  	double  sum    =  0.0;
+	int     i;        
+	double  x;        
+	double  avg    =  0.0; /* a better average */
+	double  navg;          /* a naive average */
+	double  sum    =  0.0;
 
-  	printf("%5s%17s%17s%17s\n%5s%17s%17s%17s\n\n",
-   	  	"Count", "Item", "Average", "Naive avg",
-   	  	"-----", "----", "-------", "------");
+	printf("%5s%17s%17s%17s\n%5s%17s%17s%17s\n\n",
+	    "Count", "Item", "Average", "Naive avg",
+	    "-----", "----", "-------", "------");
 
-  	for (i = 1; scanf("%lf", &x) == 1; ++i)
-  	{
-   	  	avg += (x - avg) / i;
-   	  	sum += x;
-   	  	navg = sum / i;
-   	  	printf("%5d%17e%17e%17e\n", i, x, avg, navg);
-  	}
-  	return 0;
+	for (i = 1; scanf("%lf", &x) == 1; ++i)
+	{
+		avg += (x - avg) / i;
+		sum += x;
+		navg = sum / i;
+		printf("%5d%17e%17e%17e\n", i, x, avg, navg);
+	}
+	return 0;
 }</code></pre>
 <p>Run this program so that you understand its effects. Note that the better algorithm for computing the average is embodied in the line</p>
 <pre><code>avg += (x - avg) / i;</code></pre>
