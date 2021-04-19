@@ -33,6 +33,7 @@
 <li><a href="#numerical_stability">Numerical stability</a></li>
 <li><a href="#overflow">Overflow</a></li>
 </ul>
+<li><a href="#conclusions">Conclusions</a></li>
 <li><a href="#references">References</a></li>
 </ul>
 <h2 id="introduction">Introduction</h2>
@@ -117,6 +118,11 @@ by Ling [<a href="#references">6</a>].</p>
 navg = sum / i;</code></pre>
 <p>In the above code suppose we have large numbers, then the value of their sum may exceed <code>DBL_MAX</code> causing overflow which is not the case in the other approach.</p>
 
+<h2 id="conclusions">Conclusions</h2>
+<p>In this article we've seen a numerically stable algorithm for computing the running mean, which corresponds to Welford's one-pass algorithm for the running variance. We've finally
+seen how and why it's considered better than the naive method, which comes to numerical stability and overflow. For the intereset reader [<a href="#references">6, 7</a>] contains a
+thorough comparison of various algorithms for computing the running mean and variance, and a list of algorithms for computing the variance.</p>
+
 <h2 id="references">References</h2>
 <p>[1]: Welford BP. Note on a method for calculating corrected sums of squares and products. Technometrics. 1962 Aug 1;4(3):419-20.<br>
 [2]: <a href="https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html">What Every Computer Scientist Should Know About Floating-Point Arithmetic</a>.<br>
@@ -124,6 +130,7 @@ navg = sum / i;</code></pre>
 [4]: <a href="https://en.wikipedia.org/wiki/Catastrophic_cancellation">Wikipedia: Catastrophic cancellation</a>.<br>
 [5]: <a href="https://introcs.cs.princeton.edu/java/91float/">Computer Science: An Interdisciplinary Approach, Robert Sedgewick, Kevin Wayne, Addison-Wesley Professional; 1st edition (June 15, 2016)</a>.<br>
 [6]: Ling, Robert F. (1974). Comparison of Several Algorithms for Computing Sample Means and Variances. Journal of the American Statistical Association, Vol. 69, No. 348, 859-866.<br>
+[7]: <a href="https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance">Wikipedia: Algorithms for calculating variance</a>.<br>
 </article>
 </body>
 </html>
