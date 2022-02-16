@@ -10,7 +10,7 @@
  */
 @charset "utf-8";
 html {font-size: min(max(1rem, 4vw), 16px);}
-body {color:#000000;font-family:monospace,"Courier New",Courier;padding:1em;margin:auto;max-width:72em;background:#fefefe;}
+body {color:#000000;font-family:monospace;padding:1em;margin:auto;max-width:72em;background:#fefefe;}
 .info {padding:.45rem 1rem;border:1px solid transparent;border-radius:.25rem;font-size:smaller;}
 .info-blue {color:#004085;background-color:#cce5ff;border-color:#b8daff;}
 .info-blue hr {border-top-color:#9fcdff;}
@@ -40,7 +40,7 @@ body {color:#000000;font-family:monospace,"Courier New",Courier;padding:1em;marg
 a:visited {color:#828282;}
 nav {margin-bottom:20px;}
 nav a:hover {text-decoration:underline;}
-code {font-family:"Liberation Mono","Courier New",Courier;color:darkgreen;font-weight:bold;}
+code {font-family:monospace;color:darkgreen;font-weight:bold;}
 pre {white-space:pre-wrap;word-wrap:break-word;background-color:#eeeeee;border:2px solid #f0ad4e;border-radius:6px;font-size:smaller;padding:14px;}
 pre code {color:#222222;font-weight:normal;}
 pre.no-style {line-height:normal;background-color:#ffffff;border:0px;}
